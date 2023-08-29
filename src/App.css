@@ -50,13 +50,13 @@ body {
 }
 
 /* -------------------------- APP CUSTOM STYLES -------------------------- */
-/* Heres some pre-made styling you can add you your elements to save some
-time on styling. Youll have to think about the structure of your html and
+/* Heres some pre-made styling you can add to you your elements to save some
+time on styling. You'll have to think about the structure of your html and
 add the given classes to the correct elements. Most elements will need parent
 divs in order for these classes to work, so pay attention to the nested
 styles. Learn more about nested selectors here: 
 https://developer.chrome.com/articles/css-nesting 
-Notes about each selector are added below. You are also welcome comment out 
+Notes about each selector are added below. You are also welcome to comment out 
 these styles and create your own styles and layout for the application.
 
 /** Class for the app container. It should be added to a div that wraps all of your jsx. */
@@ -74,6 +74,7 @@ these styles and create your own styles and layout for the application.
   .app-heading-text {
     font-size: 2.5rem;
     margin-top: 1rem;
+    font-weight: 700;
   }
 }
 
@@ -105,7 +106,7 @@ h2 {
 
   /** Class for the button to add*/
   .joke-input-submit {
-    width: 20%;
+    width: 25%;
     margin: 1rem 0;
     border-radius: 0rem 0.5rem 0.5rem 0rem;
     background: white;
