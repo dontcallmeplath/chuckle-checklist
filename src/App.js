@@ -1,20 +1,41 @@
 import "./App.css";
-import { postNewJoke } from "./services/jokeService.js";
-import { useState } from "react";
+import { postNewJoke, getAllJokes } from "./services/jokeService.js";
+import { useState, useEffect } from "react";
 import stevePic from "./assets/steve.png";
 
 export const App = () => {
   const [userInput, setUserInput] = useState("");
+  const [allJokes, setAllJokes] = useState([]);
+  const [untoldJokes, setUntoldJokes] = useState([]);
+  const [toldJokes, setToldJokes] = useState([]);
+
+  useEffect(() => {
+    getAllJokes().then((jokesArray) => {
+      setAllJokes(jokesArray);
+    });
+  }, []);
+
+  useEffect(() => {
+    const untoldJokeArray = allJokes.filter((joke) => joke.told === false);
+    setUntoldJokes(untoldJokeArray);
+
+    const toldJokeArray = allJokes.filter((joke) => joke.told === true);
+    setToldJokes(toldJokeArray);
+  }, [allJokes]);
+
   return (
     <>
-      <article>
+      <div className="app-container">
         <div className="app-heading">
           <div className="app-heading-circle">
             <img className="app-logo" src={stevePic} alt="Good job Steve" />
           </div>
           <h1 className="app-heading-text">Chuckle Checklist</h1>
         </div>
-        <section className="joke-add-form">
+        <div className="joke-input-label">
+          <h2>Add Joke</h2>
+        </div>
+        <div className="joke-add-form">
           <input
             className="joke-input"
             type="text"
@@ -30,17 +51,49 @@ export const App = () => {
             type="submit"
             value="Add"
             onClick={() => {
-              let transientState = {
-                id: 0,
-                text: userInput,
-                told: false,
-              };
-              postNewJoke(transientState);
+              postNewJoke(userInput);
+              getAllJokes().then((jokesArray) => {
+                setAllJokes(jokesArray);
+              });
               setUserInput("");
             }}
           />
-        </section>
-      </article>
+        </div>
+        <div className="joke-lists-container">
+          <div className="joke-list-container">
+            <h2>
+              Untold
+              <span className="told-count">{untoldJokes.length}</span>
+            </h2>
+
+            <ul>
+              {untoldJokes.map((joke) => {
+                return (
+                  <li className="joke-list-item" key={joke.id}>
+                    <p className="joke-list-item-text">{joke.text}</p>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <div className="joke-list-container">
+            <h2>
+              Told
+              <span className="untold-count">{toldJokes.length}</span>
+            </h2>
+
+            <ul>
+              {toldJokes.map((joke) => {
+                return (
+                  <li className="joke-list-item" key={joke.id}>
+                    <p className="joke-list-item-text">{joke.text}</p>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
