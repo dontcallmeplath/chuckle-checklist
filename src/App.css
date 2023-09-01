@@ -124,7 +124,7 @@ h2 {
 
   /** Class for the button to add*/
   .joke-input-submit {
-    width: 25%;
+    width: 20%;
     margin: 1rem 0;
     border-radius: 0rem 0.5rem 0.5rem 0rem;
     background: white;
@@ -210,14 +210,14 @@ h2 {
   }
 
   /** Adds styling for when the user hovers over the delete button*/
-  .joke-list-action-delete :hover {
+  .joke-list-action-delete:hover {
     color: var(--col-0);
     cursor: pointer;
     transition: all 0.1s ease-in;
   }
 
   /** Adds styling for when the user hovers over one of the toggle buttons*/
-  .joke-list-action-toggle :hover {
+  .joke-list-action-toggle:hover {
     color: var(--col-5);
     cursor: pointer;
     transition: all 0.1s ease-in;
