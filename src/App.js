@@ -1,5 +1,9 @@
 import "./App.css";
-import { postNewJoke, getAllJokes } from "./services/jokeService.js";
+import {
+  getAllJokes,
+  postNewJoke,
+  handleJokeUpdate,
+} from "./services/jokeService.js";
 import { useState, useEffect } from "react";
 import stevePic from "./assets/steve.png";
 
@@ -18,10 +22,18 @@ export const App = () => {
   useEffect(() => {
     const untoldJokeArray = allJokes.filter((joke) => joke.told === false);
     setUntoldJokes(untoldJokeArray);
-
     const toldJokeArray = allJokes.filter((joke) => joke.told === true);
     setToldJokes(toldJokeArray);
   }, [allJokes]);
+
+  const markJokeStatus = async (jokeObj) => {
+    const newJokeStatus = !jokeObj.told;
+    handleJokeUpdate(jokeObj, newJokeStatus);
+    const updatedJokes = allJokes.map((joke) =>
+      joke.id === jokeObj.id ? { ...joke, told: newJokeStatus } : joke
+    );
+    setAllJokes(updatedJokes);
+  };
 
   return (
     <>
@@ -51,9 +63,8 @@ export const App = () => {
             type="submit"
             value="Add"
             onClick={() => {
-              postNewJoke(userInput);
-              getAllJokes().then((jokesArray) => {
-                setAllJokes(jokesArray);
+              postNewJoke(userInput).then((res) => {
+                setAllJokes([...allJokes, res]);
               });
               setUserInput("");
             }}
@@ -71,6 +82,13 @@ export const App = () => {
                 return (
                   <li className="joke-list-item" key={joke.id}>
                     <p className="joke-list-item-text">{joke.text}</p>
+                    <button
+                      className="joke-list-action-toggle"
+                      type="button"
+                      onClick={() => markJokeStatus(joke)}
+                    >
+                      Told?
+                    </button>
                   </li>
                 );
               })}
@@ -87,6 +105,13 @@ export const App = () => {
                 return (
                   <li className="joke-list-item" key={joke.id}>
                     <p className="joke-list-item-text">{joke.text}</p>
+                    <button
+                      className="joke-list-action-toggle"
+                      type="button"
+                      onClick={() => markJokeStatus(joke)}
+                    >
+                      Told?
+                    </button>
                   </li>
                 );
               })}
