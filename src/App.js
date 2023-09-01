@@ -3,6 +3,7 @@ import {
   getAllJokes,
   postNewJoke,
   handleJokeUpdate,
+  deleteJoke,
 } from "./services/jokeService.js";
 import { useState, useEffect } from "react";
 import stevePic from "./assets/steve.png";
@@ -26,13 +27,21 @@ export const App = () => {
     setToldJokes(toldJokeArray);
   }, [allJokes]);
 
-  const markJokeStatus = async (jokeObj) => {
+  const markJokeStatus = (jokeObj) => {
     const newJokeStatus = !jokeObj.told;
     handleJokeUpdate(jokeObj, newJokeStatus);
     const updatedJokes = allJokes.map((joke) =>
       joke.id === jokeObj.id ? { ...joke, told: newJokeStatus } : joke
     );
     setAllJokes(updatedJokes);
+  };
+
+  const markJokeDeleted = (jokeId) => {
+    deleteJoke(jokeId).then((res) =>
+      res.ok
+        ? getAllJokes().then((res) => setAllJokes(res))
+        : console.log(JSON.stringify(res))
+    );
   };
 
   return (
@@ -83,12 +92,17 @@ export const App = () => {
                   <li className="joke-list-item" key={joke.id}>
                     <p className="joke-list-item-text">{joke.text}</p>
                     <button
-                      className="joke-list-action-toggle"
+                      id="del-btn"
                       type="button"
+                      className="fa-solid fa-trash-can joke-list-action-toggle"
+                      onClick={() => markJokeDeleted(joke.id)}
+                    ></button>
+                    <button
+                      id="fa-btn"
+                      type="button"
+                      className="fa-solid fa-face-laugh-beam joke-list-action-toggle"
                       onClick={() => markJokeStatus(joke)}
-                    >
-                      Told?
-                    </button>
+                    ></button>
                   </li>
                 );
               })}
@@ -106,12 +120,18 @@ export const App = () => {
                   <li className="joke-list-item" key={joke.id}>
                     <p className="joke-list-item-text">{joke.text}</p>
                     <button
-                      className="joke-list-action-toggle"
+                      id="del-btn"
                       type="button"
+                      className="fa-solid fa-trash-can joke-list-action-toggle"
+                      onClick={() => markJokeDeleted(joke.id)}
+                    ></button>
+                    <button
+                      id="fa-btn"
+                      type="button"
+                      alt="Click to mark joke as untold"
+                      className="fa-solid fa-skull-crossbones joke-list-action-toggle"
                       onClick={() => markJokeStatus(joke)}
-                    >
-                      Told?
-                    </button>
+                    ></button>
                   </li>
                 );
               })}

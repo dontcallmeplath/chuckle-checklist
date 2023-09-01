@@ -41,3 +41,12 @@ export const handleJokeUpdate = (jokeObj, jokeStatus) => {
   }).then((response) => response.json());
   // returns a copy of the object that was changed at that URL
 };
+
+export const deleteJoke = (jokeIndex) => {
+  return fetch(`http://localhost:8088/jokes/${jokeIndex}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((response) => response.json());
+};
